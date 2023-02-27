@@ -42,7 +42,7 @@ In this project, the main required libraries (gdal, os and numpy) have been pres
   
   Many basic functions have been used in Sentinel.py
   #### get_array
-    Returns an array of the specified band number with NaN values for cloud data. It returns a numpy array from the selected band of Sentinel 2A Level 2 processed data based on the required band number(band_num) of sentinel 2A for a certain process in form of 3 characters.
+  Returns an array of the specified band number with NaN values for cloud data. It returns a numpy array from the selected band of Sentinel 2A Level 2 processed data based on the required band number(band_num) of sentinel 2A for a certain process in form of 3 characters.
    
  #### remove_cloud_data
   Replaces cloud data in the given raster with NaN values. This function removes the pixels classified as High probability cloud, Medium Probability cloud and cloud shadow from the given sentinel 2 raster in each raster array (raster_array)
@@ -88,9 +88,64 @@ Writes a NumPy array to a raster file using GDAL.
 * Write the array to the raster band
     
     
-       
 ### flood.py (class)
+This class represents the flood case which its data obtained from sentinel image captured during extreme flood event. This part of code aims to determine the inundated areas under the extreme flood using ndwi_array function
 
-#### Heading 4
-##### Heading 5
-###### Heading 6
+#### ndwi_array
+This property returns the normalized difference water index (NDWI) array for the image. NDWI is computed as (green - NIR) / (green + NIR), where green is the green band and NIR is the near-infrared band.
+
+
+### Baseline.py (class)
+This class represents the baseline case which its data obtained from sentinel image captured during flood event which not exceed the average flood recordes.this class contains several function used to categorize the inundated areas.
+
+#### ndwi_array
+This property returns the normalized difference water index (NDWI) array for the image. NDWI is computed as (green - NIR) / (green + NIR), where green is the green band and NIR is the near-infrared band.
+
+#### ndvi_array
+This property returns the normalized difference vegetation index (NDVI) array for the image. NDVI is computed as (NIR - Red) / (NIR + Red), where green is the Red band and NIR is the near-infrared band.
+
+#### ndbi_array
+ This property returns the normalized difference building index (NDBI) array for the image. NDBI is computed as (SWIR1- NIR) / (SWIR1 + NIR), where SWIR1 is the Short Wave Infrared Band 1 and NIR is the near-infrared band.
+ 
+ #### bare_soil_index_array
+ This property returns the Bare soil index (BSI) array for the image. BSI is computed as (SWIR1 + Red - NIR - Blue) / (SWIR1 + Red + NIR + Blue), where SWIR1 is the Short Wave Infrared Band 1, Red is the Red band, Blue is the Blue band and NIR is the near-infrared band.
+
+#### save_rasters
+ This function saves the indices as rasters to a desired folder in .tif format.
+ * output_path: Desired path where rasters want to be saved
+ * ndwi: Boolean with default value set to "False", for saving the NDWI raster
+ * ndvi: Boolean with default value set to "False", for saving the NDVI raster
+ * ndbi: Boolean with default value set to "False", for saving the NDBI raster
+ * bare_soil_index: Boolean with default value set to "False", for saving the BSI raster
+ * return: If no rasters are selected, print a message (" No raster selected to be written, " "Use arguments 'ndwi=True' 'ndvi=True' and/or 'ndbi=True' to save rasters")
+
+### plot.py (plot_flood_classification)
+This function contains matplotlib.pyplot and numpy libraries to plot maps contain all the categories of the areas under the water in different colours
+
+## Main.py (function) 
+The main function when called, performs indices calculations using a user provided baseline image and an image acquired during flood from Sentinel 2 Level 2A Images from Copernicus Open Access Hub (https://scihub.copernicus.eu/dhus/#/home) The results saved from this program by default save in an Output folder within the directory in which the program is located.
+* base_image: Folder path to (sentinel2image).SAFE folder for an image used for baseline indices analysis
+* flood_image: Folder path to ( sentinel2image).SAFE folder for an image flood/water extent calculation
+* resolution: Resolution of imagery to be used
+* plot: Boolean for prompting for creating a plot from the resultant masks, default value set to "False"
+* Assign classes to the image paths
+* Read and print metadata
+* Process flood image
+
+##### PROCESS BASE IMAGE
+* Calculate NDVI and create its flooded mask
+* Calculate NDBI and its flooded mask
+* Calculate Bare_Soil_Index and its flooded mask
+* Save rasters to output folder
+* Save flood mask
+* Save NDBI, NDVI, Bare_Soil Index from the baseline image
+* Save flooded area classifications
+* Plot image
+
+
+
+ 
+   
+ 
+  
+
