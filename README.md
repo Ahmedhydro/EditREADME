@@ -19,7 +19,6 @@
 * OS Library
 * xml .etree .ElementTree Library
 * Matplotlib Library
-* Logging Library
 
 ## Available Data and Code Structure
 The following flow chart illustrates the provided code and data. Functions, methods, and files have been excuted in this project.
